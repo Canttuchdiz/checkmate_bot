@@ -1,26 +1,28 @@
 import discord
 from discord import app_commands
 from discord.ext import commands
+from discord.types.snowflake import Snowflake
 from checkmate.utils.config import Config
-from checkmate.models.modals import RequestReceiver
+from checkmate.models.views import PurchaseMenu
 from typing import Optional, Union, List, Any
 
 class Broker(commands.Cog):
 
-    def __int__(self, bot) -> None:
+    def __init__(self, bot) -> None:
         self.client: commands.Bot = bot
+        self.in_ticket: List[Snowflake] = []
 
-    async def dev_autocomplete(self, interaction: discord.Interaction, current: str) -> Any:
-        devs = [interaction.guild.get_member(user_id) for user_id in Config.DEVS]
-        return [app_commands.Choice(name=dev.name, value=str(dev.id)) for dev in devs if current.lower() in dev.name.lower()]
+    # async def dev_autocomplete(self, interaction: discord.Interaction, current: str) -> Any:
+    #     devs = [interaction.guild.get_member(user_id) for user_id in Config.DEVS]
+    #     return [app_commands.Choice(name=dev.name, value=str(dev.id)) for dev in devs if current.lower() in dev.name.lower()]
 
     # Send modal with user request
     @app_commands.command(name="buy", description="Allows user to fill out bot request")
-    @app_commands.autocomplete(developer=dev_autocomplete)
-    async def buy(self, interaction: discord.Interaction, developer: Optional[str]) -> None:
+    async def buy(self, interaction: discord.Interaction) -> None:
+        view = PurchaseMenu(self.client)
+        await interaction.response.send_message(view=view, ephemeral=True)
+        self.in_ticket.append(interaction.user.id)
 
-        modal = RequestReceiver(developer)
-        await interaction.response.send_modal(modal)
 
 async def setup(bot):
     await bot.add_cog(Broker(bot))

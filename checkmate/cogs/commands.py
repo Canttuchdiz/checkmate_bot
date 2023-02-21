@@ -20,7 +20,6 @@ class Commands(commands.Cog):
 
     # Shuts down bot, which can only be used by users in id_list in utils
 
-    @commands.is_owner()
     @commands.command(aliases=['guilds'])
     async def guildcount(self, ctx) -> None:
         await ctx.send(f"{len(self.client.guilds)}")
