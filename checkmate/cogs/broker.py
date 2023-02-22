@@ -20,7 +20,12 @@ class Broker(commands.Cog):
     @app_commands.command(name="buy", description="Allows user to fill out bot request")
     async def buy(self, interaction: discord.Interaction) -> None:
         view = PurchaseMenu(self.client)
-        await interaction.response.send_message(view=view, ephemeral=True)
+        options = '**|**'.join([f"``{option}``" for option in Config.OPTIONS])
+        embed = discord.Embed(title="Purchase Options", color=discord.Color.yellow(),
+                              description="You have the option to choose:\n" + options)
+        for i, button in enumerate(view.children):
+            embed.add_field(name=button.label, value=f"${Config.PRICES[i]}")
+        await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
         self.in_ticket.append(interaction.user.id)
 
 
