@@ -46,10 +46,12 @@ class RequestData:
     description: str
     response: discord.InteractionResponse
     category: str
+    budget: str
 
     def request_embed(self) -> discord.Embed:
-        embed = discord.Embed(title=f"Bot Request", description=self.description,
-                              color=discord.Color.blurple())
+        embed = discord.Embed(title=f"Custom Bot Request", color=discord.Color.blurple())
         embed.set_author(name=self.user_client, icon_url=self.user_client.avatar)
+        embed.add_field(name="Request", value=self.description)
+        embed.add_field(name="Budget", value=self.budget)
         embed.set_footer(text=f"ID · {self.user_client.id}")
         return embed
