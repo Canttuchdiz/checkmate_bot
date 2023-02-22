@@ -17,7 +17,7 @@ class RequestReceiver(Modal, title='Bot Request'):
         data = RequestData(interaction.guild, interaction.user, self.description.value, interaction.response, "Orders")
         request = CustomBot(data)
         await request.create_request()
-        await interaction.response.edit_message(content="Request was sent!", view=None)
+        await interaction.response.edit_message(content="Request was sent!", view=None, embed=None)
         self.stop()
 
 
