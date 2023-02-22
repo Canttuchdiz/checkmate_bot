@@ -17,6 +17,8 @@ class BaseRequest:
 
     async def create_request(self) -> None:
         channel = await UtilMethods.text_cat(self.guild, self.category, self.user_client)
+        await channel.set_permissions(self.user_client, send_messages=True, read_messages=True,
+                                      attach_files=True, external_emojis=True, read_message_history=True)
         embed = self.data.request_embed()
         await channel.send(embed=embed)
 
