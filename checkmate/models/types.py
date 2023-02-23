@@ -20,7 +20,9 @@ class BaseRequest:
         await channel.set_permissions(self.user_client, send_messages=True, read_messages=True,
                                       attach_files=True, external_emojis=True, read_message_history=True)
         embed = self.data.request_embed()
-        await channel.send(embed=embed)
+        from checkmate.models.views import TicketClose
+        view = TicketClose(channel)
+        await channel.send(embed=embed, view=view)
 
 
 class CustomBot(BaseRequest):

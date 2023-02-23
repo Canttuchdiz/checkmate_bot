@@ -35,3 +35,15 @@ class PurchaseMenu(View):
         Button used for submitting a hosting request.
         """
         pass
+
+
+class TicketClose(View):
+
+    def __init__(self, channel: discord.TextChannel):
+        super().__init__(timeout=None)
+        self.channel = channel
+
+    @discord.ui.button(label="Close", style=discord.ButtonStyle.danger, emoji='🔒')
+    async def close(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await self.channel.delete()
+        self.stop()
